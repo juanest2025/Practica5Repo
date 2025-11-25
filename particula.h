@@ -1,6 +1,7 @@
 #ifndef PARTICULA_H
 #define PARTICULA_H
 
+<<<<<<< HEAD
 #include <iostream>
 
 class Particula {
@@ -20,3 +21,23 @@ public:
 };
 
 #endif
+=======
+#include <cmath>
+
+class Particula
+{
+
+public:
+    int id;
+    double x, y;
+    double vx, vy;
+    double mass;
+    double radius;
+
+    Particula(int id_, double x_, double y_, double vx_, double vy_, double mass_);
+    void move(double dt);
+    void updateRadius();
+};
+
+#endif // PARTICULA_H
+>>>>>>> 1dbb7aae41edf067df5169f09332ef0b8378459c
