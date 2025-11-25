@@ -11,3 +11,5 @@ Toda la simulación se ejecuta en **tiempo discreto (Δt)** y los resultados se 
 ├── simulador.h / simulador.cpp  
 └── resultados.txt
 ```
+# Nota:
+la carpeta del buil no se subio profe, entonces para compilar, hay q mover el archivo resultados.txt a la nueva carpeta del buil cuando se cree en la compilacion en el QT.
