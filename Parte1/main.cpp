@@ -1,6 +1,6 @@
 #include <iostream>
 #include "simulador.h"
-
+using namespace std;
 int main() {
     Simulador sim(500, 400, 0.1);  // ancho, alto, paso de tiempo
 
@@ -19,6 +19,6 @@ int main() {
         t += sim.dt;
     }
 
-    std::cout << "Simulación terminada. Resultados guardados en resultados.txt\n";
+    cout << "Simulación terminada. Resultados guardados en resultados.txt\n";
     return 0;
 }
