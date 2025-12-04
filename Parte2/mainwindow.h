@@ -3,85 +3,77 @@
 
 #include <QMainWindow>
 #include <QGraphicsScene>
-#include <QGraphicsView>
+#include <QGraphicsRectItem>
+#include <QGraphicsEllipseItem>
+#include <QGraphicsPixmapItem>
 #include <QTimer>
-#include <QLabel>
-#include <QPushButton>
-#include <QDoubleSpinBox>
-#include <QDockWidget>
-#include <QVBoxLayout>
+#include "proyectil.h"
+#include <QtMath>
 #include <QMessageBox>
-#include <QDebug>
-#include <cmath>
-#include <algorithm>
-#include <QPainter> // Necesario para QGraphicsView::setRenderHint
-#include "constante.h"
 
-// Asumiendo que estas constantes y clases están definidas en alguna parte
-// NOTA: Debes definir 'DT', 'PI', 'DEFAULT_RESTITUTION', 'DEFAULT_DAMAGE_FACTOR' en un archivo (ej. constants.h)
-#include "proyectil.h" // Clase Proyectil
-#include "obstaculo.h"  // Clase Obstaculo
+QT_BEGIN_NAMESPACE
+namespace Ui { class MainWindow; }
+QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow {
+class MainWindow : public QMainWindow
+{
     Q_OBJECT
+
 public:
-    MainWindow(QWidget* parent = nullptr);
+    explicit MainWindow(QWidget *parent = nullptr);
+    ~MainWindow();
 
 private slots:
-    void onIncreaseAngle();
-    void onFire();
-    void onTick();
+    void on_Disparar_clicked();
+
+    void on_AumentarAngulo_clicked();
+
+    void on_DisminuirAngulo_clicked();
 
 private:
-    // Scene & UI
-    QGraphicsScene* m_scene = nullptr;
-    QGraphicsView* m_view = nullptr;
-    QRectF m_sceneRect;
-    QTimer* m_timer = nullptr;
+    bool turnoIzquierda = true; // true = cañón 1, false = cañón 2
+    Ui::MainWindow *ui;
+    QGraphicsScene *scene;
 
-    // Controls
-    QWidget* m_controlWidget = nullptr;
-    QLabel* m_turnLabel = nullptr;
-    QLabel* m_angleLabel = nullptr;
-    QLabel* m_speedLabel = nullptr;
-    QDoubleSpinBox* m_speedSpin = nullptr;
-    QDoubleSpinBox* m_massSpin = nullptr;
-    QDoubleSpinBox* m_radiusSpin = nullptr;
-    QDoubleSpinBox* m_restitutionSpin = nullptr;
-    QDoubleSpinBox* m_damageFactorSpin = nullptr;
+    // Cajas
+    QGraphicsRectItem *rect_1;
+    QGraphicsRectItem *rect_2;
+    QGraphicsRectItem *rect_3;
+    QGraphicsRectItem *rect_4;
+    QGraphicsRectItem *rect_5;
+    QGraphicsRectItem *rect_6;
 
-    // Game objects
-    Proyectil* m_projectile = nullptr; // Tipo corregido
-    QVector<Obstaculo*> m_obstaclesLeft; // Tipo corregido
-    QVector<Obstaculo*> m_obstaclesRight; // Tipo corregido
-    QPointF m_cannonLeftMuzzle, m_cannonRightMuzzle;
+    // Cañón 1
+    QGraphicsRectItem *cano1_plataforma;
+    QGraphicsEllipseItem *cano1_cuerpo;
+    QGraphicsRectItem *cano1_tubo;
 
-    // Game state
-    int m_currentPlayer = 1;
-    double m_angle = 45.0;
-    double m_speed = 400.0;
-    double m_mass = 1.0;
-    double m_radius = 8.0;
-    double m_restitution = DEFAULT_RESTITUTION;
-    double m_damageFactor = DEFAULT_DAMAGE_FACTOR;
+    // Cañón 2
+    QGraphicsRectItem *cano2_plataforma;
+    QGraphicsEllipseItem *cano2_cuerpo;
+    QGraphicsRectItem *cano2_tubo;
 
-    // Helpers
-    void createControls();
-    void updateTurnLabel();
-    void updateAngleLabel();
-    void updateSpeedLabel();
-    void buildInterface();
-    void drawStickman(double cx, double cy);
+    // Sprites
+    QGraphicsPixmapItem *sprite_1;
+    QGraphicsPixmapItem *sprite_2;
 
-    // Physics/Game Logic (Firmas corregidas)
-    void handleWallCollision(Proyectil* p);
-    void handleObstaclesCollision(Proyectil* p);
-    void checkCollisionList(Proyectil* p, QVector<Obstaculo*> &list);
-    bool checkVictory();
-    void showVictoryDialog();
-    void removeProjectile();
-    void nextTurn();
-    void resetGame();
+    // Proyectil
+    Proyectil *proyectil = nullptr;
+
+    //Ángulo
+    double angulo = 45.0;
+
+    // Sistema de vida
+    int vidaEstructura1 = 100;
+    int vidaEstructura2 = 100;
+    bool juegoTerminado = false;
+
+    void aplicarDanio(int jugador, int danio);
+    void verificarGanador();
+    void reiniciarJuego();
+
+
 };
 
 #endif // MAINWINDOW_H
+

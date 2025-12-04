@@ -3,24 +3,31 @@
 
 #include <QObject>
 #include <QGraphicsEllipseItem>
-#include <QPointF>
-#include <QBrush>
+#include <QTimer>
 
-class Proyectil : public QObject, public QGraphicsEllipseItem {
+class Proyectil : public QObject, public QGraphicsEllipseItem
+{
     Q_OBJECT
 public:
-    Proyectil(double masa, double radio, const QPointF& pos, const QPointF& vel, QGraphicsItem* parent = nullptr);
+    // owner: 1 => disparó jugador 1 (izquierda), 2 => disparó jugador 2 (derecha)
+    explicit Proyectil(double vx0, double vy0, double g, int owner0);
 
-    QPointF velocidad() const;
-    void setVelocidad(const QPointF& v);
-    double masa() const;
-    double radio() const;
-    void movimiento(double dt); // Función de avance de física (usada en MainWindow::onTick)
+signals:
+    void destruir();
+    void danioEstructura(int jugador, int danio);
+
+private slots:
+    void mover();
 
 private:
-    double m_masa;
-    double m_radio;
-    QPointF m_velocidad;
+    double vx;
+    double vy;
+    double gravedad;
+    int rebotes = 0;
+    int owner;
+
+    QTimer *timer;
 };
 
 #endif // PROYECTIL_H
+
